@@ -15,7 +15,7 @@ func Connect() {
 
 	client = MQTT.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
-		log.Fatal("client连接失败",token.Error())
+		log.Fatal("client连接失败", token.Error())
 	}
 }
 
@@ -26,11 +26,7 @@ func Publish(topic string, payload interface{}) {
 
 func Subscribe(topic string, callback MQTT.MessageHandler) {
 	if token := client.Subscribe(topic, 0, callback); token.Wait() && token.Error() != nil {
-		log.Fatal("订阅失败",token.Error())
+		log.Fatal("订阅失败", token.Error())
 	}
 	log.Infof("topic:%s 订阅成功", topic)
-}
-
-func DeleteTopic() {
-	//client.
 }

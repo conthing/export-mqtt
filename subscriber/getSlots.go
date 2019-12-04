@@ -6,6 +6,6 @@ import (
 )
 
 func SubscribeGetSlots(mac string, callback mqtt.MessageHandler) {
-		topic := "/parklock/" + mac + "/getSlots"
-		client.Subscribe(topic, callback)
+	topic := "/parklock/" + mac + "/getSlots"
+	client.Subscribe(topic, callback)
 }

@@ -17,15 +17,16 @@ const configFile = "config.yaml"
 type Config struct {
 	Host    string `yaml:"host"`
 	MQTTURL string `yaml:"mqtturl"`
+	NetName string `yaml:"net"`
 }
 
 var conf = Config{
 	Host:    "localhost",
 	MQTTURL: "tcp://mqtt.conthing.com:1883",
+	NetName: "eth1",
 }
 
 func ConfigService() {
-	config.SetMac()
 
 	if !exists(configFile) {
 		createConfigFile()
@@ -41,6 +42,7 @@ func ConfigService() {
 	}
 
 	//todo
+	config.SetMac(conf.NetName)
 
 	api.BlackListURL = "http://" + conf.Host + "/parklock/blacklist"
 	api.WhiteListURL = "http://" + conf.Host + "/parklock/whitelist"
@@ -67,12 +69,12 @@ func createConfigFile() {
 	buf := new(bytes.Buffer)
 	err := yaml.NewEncoder(buf).Encode(conf)
 	if err != nil {
-		log.Fatal("配置文件编码失败",err)
+		log.Fatal("配置文件编码失败", err)
 	}
 
 	f, err := os.Create(configFile)
 	if err != nil {
-		log.Fatal("配置文件创建失败",err)
+		log.Fatal("配置文件创建失败", err)
 	}
 	defer func() {
 		err := f.Close()
@@ -84,6 +86,6 @@ func createConfigFile() {
 
 	_, err = f.Write(buf.Bytes())
 	if err != nil {
-		log.Fatal("配置文件写入失败",err)
+		log.Fatal("配置文件写入失败", err)
 	}
 }

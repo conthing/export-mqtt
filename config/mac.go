@@ -8,16 +8,10 @@ import (
 
 var Mac string
 
-func SetMac() {
-	netInterface, err := net.InterfaceByName("eth0")
+func SetMac(name string) {
+	netInterface, err := net.InterfaceByName(name)
 	if err != nil {
-		netInterface, err = net.InterfaceByName("eth1")
-		if err != nil {
-			netInterface, err = net.InterfaceByName("en0")
-			if err != nil {
-				log.Fatal("无法获取mac地址")
-			}
-		}
+		log.Fatal("无法获取mac地址", name)
 	}
 
 	Mac = fmt.Sprintf("%x", []byte(netInterface.HardwareAddr))
