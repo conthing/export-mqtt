@@ -2,8 +2,9 @@ package api
 
 import (
 	"bytes"
-	log "github.com/sirupsen/logrus"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var WhiteListURL = "http://localhost/parklock/blacklist"

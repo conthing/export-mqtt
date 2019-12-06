@@ -7,9 +7,10 @@ import (
 	"export-mqtt/dto"
 	"export-mqtt/publisher"
 	"export-mqtt/subscriber"
+	"strconv"
+
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	log "github.com/sirupsen/logrus"
-	"strconv"
 
 	"sort"
 	"time"
@@ -26,10 +27,12 @@ func SubscribeGetSlots() {
 
 func LoadSlots() {
 	err := storeSlots(&StoredSlots)
-	sort.Sort(dto.ByAddr(StoredSlots))
-	if err != nil {
-		log.Fatal("LoadSlots 失败", err)
+	for err != nil {
+		time.Sleep(3 * time.Second)
+		err = storeSlots(&StoredSlots)
 	}
+	sort.Sort(dto.ByAddr(StoredSlots))
+
 	subscribeAllCommand(StoredSlots)
 }
 

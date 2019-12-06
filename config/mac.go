@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	log "github.com/sirupsen/logrus"
 	"net"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var Mac string

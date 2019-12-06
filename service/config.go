@@ -5,10 +5,11 @@ import (
 	"export-mqtt/api"
 	"export-mqtt/client"
 	"export-mqtt/config"
-	log "github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
+
+	log "github.com/sirupsen/logrus"
+	"gopkg.in/yaml.v2"
 )
 
 const configFile = "config.yaml"
@@ -21,7 +22,7 @@ type Config struct {
 }
 
 var conf = Config{
-	Host:    "localhost",
+	Host:    "localhost:52032",
 	MQTTURL: "tcp://mqtt.conthing.com:1883",
 	NetName: "eth1",
 }
@@ -44,10 +45,10 @@ func ConfigService() {
 	//todo
 	config.SetMac(conf.NetName)
 
-	api.BlackListURL = "http://" + conf.Host + "/parklock/blacklist"
-	api.WhiteListURL = "http://" + conf.Host + "/parklock/whitelist"
-	api.SlotsURL = "http://" + conf.Host + "/parklock/slots"
-	api.CommandURL = "http://" + conf.Host + "/parklock/slots/"
+	api.BlackListURL = "http://" + conf.Host + "/api/v1/blacklist"
+	api.WhiteListURL = "http://" + conf.Host + "/api/v1/whitelist"
+	api.SlotsURL = "http://" + conf.Host + "/api/v1/slots"
+	api.CommandURL = "http://" + conf.Host + "/api/v1/slots/"
 
 	client.MQTTURL = conf.MQTTURL
 }
