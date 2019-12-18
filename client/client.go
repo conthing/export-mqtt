@@ -25,6 +25,8 @@ func Connect() {
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
 		log.Fatal("client连接失败", token.Error())
 	}
+	Status = "connected"
+	go CheckIsConnected()
 }
 
 // CheckIsConnected 检查是否连接

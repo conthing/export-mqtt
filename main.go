@@ -26,8 +26,8 @@ func main() {
 }
 
 func startHttpServer() {
-	http.Handle("/ping", http.HandlerFunc(PingHandler))
-	http.Handle("/status", http.HandlerFunc(StatusHandler))
+	http.Handle("/api/v1/ping", http.HandlerFunc(PingHandler))
+	http.Handle("/api/v1/status", http.HandlerFunc(StatusHandler))
 	err := http.ListenAndServe(":52018", nil)
 	if err != nil {
 		log.Fatal("http服务器启动失败")
