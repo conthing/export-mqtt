@@ -27,6 +27,7 @@ var conf = Config{
 	NetName: "eth1",
 }
 
+// ConfigService 配置服务
 func ConfigService() {
 
 	if !exists(configFile) {

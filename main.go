@@ -1,10 +1,13 @@
 package main
 
 import (
+	"encoding/json"
 	"export-mqtt/client"
+	"export-mqtt/dto"
 	"export-mqtt/service"
-	log "github.com/sirupsen/logrus"
 	"net/http"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func init() {
@@ -24,6 +27,7 @@ func main() {
 
 func startHttpServer() {
 	http.Handle("/ping", http.HandlerFunc(PingHandler))
+	http.Handle("/status", http.HandlerFunc(StatusHandler))
 	err := http.ListenAndServe(":52018", nil)
 	if err != nil {
 		log.Fatal("http服务器启动失败")
@@ -31,4 +35,14 @@ func startHttpServer() {
 }
 func PingHandler(w http.ResponseWriter, req *http.Request) {
 	w.Write([]byte("pong"))
+}
+
+func StatusHandler(w http.ResponseWriter, req *http.Request) {
+	var resp dto.StatusInfo
+	resp.Status = client.Status
+	data, err := json.Marshal(resp)
+	if err != nil {
+		w.WriteHeader(http.StatusBadGateway)
+	}
+	w.Write(data)
 }
