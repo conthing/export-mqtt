@@ -2,6 +2,7 @@ package dto
 
 import "fmt"
 
+// Slot 车位锁
 type Slot struct {
 	Name     string  `json:"name"`
 	Addr     uint32  `json:"addr"`
@@ -15,6 +16,7 @@ func (s Slot) String() string {
 	return fmt.Sprintf("%s: %d", s.Name, s.Addr)
 }
 
+// ByAddr 排序
 type ByAddr []Slot
 
 func (a ByAddr) Len() int {
