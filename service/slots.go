@@ -1,7 +1,6 @@
 package service
 
 import (
-	"encoding/json"
 	"export-mqtt/api"
 	"export-mqtt/config"
 	"export-mqtt/dto"
@@ -26,13 +25,12 @@ func SubscribeGetSlots() {
 }
 
 func LoadSlots() {
-	err := storeSlots(&StoredSlots)
+	err := storeSlots()
 	for err != nil {
 		time.Sleep(3 * time.Second)
-		err = storeSlots(&StoredSlots)
+		err = storeSlots()
 	}
 	sort.Sort(dto.ByAddr(StoredSlots))
-
 	subscribeAllCommand(StoredSlots)
 }
 
@@ -55,7 +53,7 @@ func DiffSlots() {
 	for {
 		time.Sleep(time.Second * 5)
 		newSlots := make([]dto.Slot, 0)
-		storeSlots(&newSlots)
+		storeSlots()
 		sort.Sort(dto.ByAddr(newSlots))
 		for i, slot := range newSlots {
 			if slot.Addr != StoredSlots[i].Addr ||
@@ -83,18 +81,14 @@ func publishSlots(slots []dto.Slot) {
 	publisher.PublishSlots(topic, slots)
 }
 
-func storeSlots(slots *[]dto.Slot) error {
-	slotsBytes, err := api.GetSlots()
+func storeSlots() error {
+	res, err := api.GetSlots()
 	if err != nil {
 		log.Error("获取 Slots 失败", err)
 		return err
 	}
 
-	err = json.Unmarshal(slotsBytes, slots)
-	if err != nil {
-		log.Error("序列化 Slots 失败", err)
-		return err
-	}
+	StoredSlots = res.Data
 	return nil
 
 }

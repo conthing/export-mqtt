@@ -1,0 +1,1 @@
+scp export-mqtt root@192.168.0.189:/app/zap/export-mqtt/export-mqtt

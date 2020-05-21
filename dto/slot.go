@@ -2,6 +2,13 @@ package dto
 
 import "fmt"
 
+// SlotResp 回复
+type SlotResp struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Data    []Slot `json:"data"`
+}
+
 // Slot 车位锁
 type Slot struct {
 	Name     string  `json:"name"`
