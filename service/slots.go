@@ -2,12 +2,12 @@ package service
 
 import (
 	"export-mqtt/api"
-	"export-mqtt/config"
 	"export-mqtt/dto"
 	"export-mqtt/publisher"
 	"export-mqtt/subscriber"
 	"strconv"
 
+	"github.com/conthing/utils/common"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	log "github.com/sirupsen/logrus"
 
@@ -18,7 +18,7 @@ import (
 var StoredSlots = make([]dto.Slot, 0)
 
 func SubscribeGetSlots() {
-	subscriber.SubscribeGetSlots(config.Mac, func(client MQTT.Client, message MQTT.Message) {
+	subscriber.SubscribeGetSlots(common.GetSerialNumber(), func(client MQTT.Client, message MQTT.Message) {
 		LoadSlots()
 		publishSlots(StoredSlots)
 	})
@@ -38,7 +38,7 @@ func subscribeAllCommand(slots []dto.Slot) {
 	for _, slot := range slots {
 		addr := strconv.Itoa(int(slot.Addr))
 		callback := generateCommandCallback(addr)
-		subscriber.SubscribeCommand(config.Mac, addr, callback)
+		subscriber.SubscribeCommand(common.GetSerialNumber(), addr, callback)
 	}
 }
 
@@ -77,7 +77,7 @@ func DiffSlots() {
 }
 
 func publishSlots(slots []dto.Slot) {
-	topic := "/parklock/" + config.Mac + "/slots"
+	topic := "/parklock/" + common.GetSerialNumber() + "/slots"
 	publisher.PublishSlots(topic, slots)
 }
 

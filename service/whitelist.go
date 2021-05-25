@@ -2,14 +2,14 @@ package service
 
 import (
 	"export-mqtt/api"
-	"export-mqtt/config"
 	"export-mqtt/subscriber"
 
+	"github.com/conthing/utils/common"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 )
 
 func SubscribeWhiteListService() {
-	subscriber.SubscribeWhiteList(config.Mac, whiteListCallback)
+	subscriber.SubscribeWhiteList(common.GetSerialNumber(), whiteListCallback)
 }
 
 func whiteListCallback(client MQTT.Client, msg MQTT.Message) {

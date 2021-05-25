@@ -2,3 +2,4 @@ export-mqtt
 .idea
 config.yaml
 export-mqtt.iml
+go.sum

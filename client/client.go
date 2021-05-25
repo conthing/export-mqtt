@@ -1,9 +1,9 @@
 package client
 
 import (
-	"export-mqtt/config"
 	"time"
 
+	"github.com/conthing/utils/common"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	log "github.com/sirupsen/logrus"
 )
@@ -19,7 +19,7 @@ var Status string
 // Connect 连接
 func Connect() {
 	opts := MQTT.NewClientOptions().AddBroker(MQTTURL)
-	opts.SetClientID(config.Mac)
+	opts.SetClientID(common.GetSerialNumber())
 
 	client = MQTT.NewClient(opts)
 	if token := client.Connect(); token.Wait() && token.Error() != nil {
@@ -32,6 +32,7 @@ func Connect() {
 // CheckIsConnected 检查是否连接
 func CheckIsConnected() {
 	for {
+		common.Log.Debugf("%s status:%s", MQTTURL, Status)
 		time.Sleep(time.Second * 60)
 		isConnected := client.IsConnected()
 		if isConnected {
